@@ -74,4 +74,13 @@ contract Voting {
 
         return (candidates[winningIndex].name, highestVotes);
     }
+function getCandidate(uint256 index) external view returns (string memory, uint256) {
+    return (candidates[index].name, candidates[index].voteCount);
 }
+
+function candidatesLength() external view returns (uint256) {
+    return candidates.length;
+}
+
+}
+

@@ -59,21 +59,28 @@ contract Voting {
     }
 
     // Return the name of the winning candidate
-    function getWinner() external view returns (string memory winnerName, uint256 winnerVotes) {
-        if (!votingEnded) revert VotingNotEnded();
+    function getWinner()
+    external
+    view
+    returns (string memory winnerName, uint256 winnerVotes)
+{
+    if (!votingEnded) revert VotingNotEnded();
+    if (candidates.length == 0) revert NoCandidates();
 
-        uint256 highestVotes = 0;
-        uint256 winningIndex = 0;
+    uint256 highestVotes = 0;
+    uint256 winningIndex = 0;
 
-        for (uint256 i = 0; i < candidates.length; i++) {
-            if (candidates[i].voteCount > highestVotes) {
-                highestVotes = candidates[i].voteCount;
-                winningIndex = i;
-            }
+    for (uint256 i = 0; i < candidates.length; i++) {
+        if (candidates[i].voteCount > highestVotes) {
+            highestVotes = candidates[i].voteCount;
+            winningIndex = i;
         }
-
-        return (candidates[winningIndex].name, highestVotes);
     }
+
+    Candidate storage winner = candidates[winningIndex];
+    return (winner.name, winner.voteCount);
+}
+
 function getCandidate(uint256 index) external view returns (string memory, uint256) {
     return (candidates[index].name, candidates[index].voteCount);
 }
@@ -83,4 +90,5 @@ function candidatesLength() external view returns (uint256) {
 }
 
 }
+
 
